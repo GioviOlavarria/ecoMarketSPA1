@@ -14,6 +14,7 @@ public class EcoMarketSpa1Application {
 
 //entorno de pruebas testing
 //según ppts de clase, hay que agregar:
+
 //JUnit 5
 //Mockito
 // HATEOAS
