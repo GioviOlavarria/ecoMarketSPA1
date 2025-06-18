@@ -52,7 +52,7 @@ public class controladorWebCompras {
         }
         return "redirect:/web/compras";
     }
-
+    
     @GetMapping("/ver/{id}")
     public String verCompra(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<compras> compra = servicioCompras.listarCompra(id);

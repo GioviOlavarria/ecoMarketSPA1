@@ -27,7 +27,7 @@ public class controladorWebUsuarios {
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("usuario", new usuarios());
         model.addAttribute("titulo", "Nuevo Usuario");
-        return "usuarios/formulario";
+        return "usuarios/nuevo";
     }
 
     @GetMapping("/editar/{id}")
@@ -77,4 +77,5 @@ public class controladorWebUsuarios {
             return "redirect:/web/usuarios";
         }
     }
+
 }
