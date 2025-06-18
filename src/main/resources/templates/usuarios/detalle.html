@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Usuario - EcoMarket SPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #22c55e !important;
+        }
+        .btn-eco {
+            background-color: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+        .btn-eco:hover {
+            background-color: #16a34a;
+            border-color: #16a34a;
+            color: white;
+        }
+        .profile-header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 1rem;
+        }
+        .info-card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-bottom: 1.5rem;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-value {
+            font-size: 1.1rem;
+            color: #343a40;
+            margin-top: 0.25rem;
+        }
+        .status-badge {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+        }
+        .activity-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e9ecef;
+        }
+        .activity-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #22c55e;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-leaf me-2"></i>
+                EcoMarket SPA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/web/usuarios">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/compras">Compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-success">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/web/usuarios" class="text-success">Usuarios</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detalle de Usuario</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- User Profile Card -->
+            <div class="col-lg-4 mb-4">
+                <div class="card info-card">
+                    <div class="profile-header text-center">
+                        <div class="profile-avatar rounded-circle">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="mb-1" th:text="${usuario.nombre}">Nombre Usuario</h3>
+                        <p class="mb-2" th:text="'ID: ' + ${usuario.id_usuario}">ID: 1</p>
+                        <span class="badge status-badge" 
+                              th:classappend="${usuario.activo} ? 'bg-success' : 'bg-secondary'"
+                              th:text="${usuario.activo} ? 'Usuario Activo' : 'Usuario Inactivo'">
+                            Estado
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/web/usuarios/editar/{id}(id=${usuario.id_usuario})}" 
+                               class="btn btn-eco">
+                                <i class="fas fa-edit me-2"></i>
+                                Editar Usuario
+                            </a>
+                            <a href="/web/usuarios" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Volver a Lista
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card info-card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Estadísticas Rápidas
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h4 class="text-success mb-1">0</h4>
+                                    <small class="text-muted">Compras</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="border-end">
+                                    <h4 class="text-primary mb-1">0</h4>
+                                    <small class="text-muted">Pedidos</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="text-warning mb-1">$0</h4>
+                                <small class="text-muted">Total</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Details -->
+            <div class="col-lg-8">
+                <!-- Personal Information -->
+                <div class="card info-card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-circle me-2"></i>
+                            Información Personal
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Nombre Completo</div>
+                                <div class="info-value" th:text="${usuario.nombre}">-</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Correo Electrónico</div>
+                                <div class="info-value">
+                                    <i class="fas fa-envelope me-2 text-muted"></i>
+                                    <span th:text="${usuario.email}">-</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Teléfono</div>
+                                <div class="info-value">
+                                    <i class="fas fa-phone me-2 text-muted"></i>
+                                    <span th:text="${usuario.telefono != null ? usuario.telefono : 'No registrado'}">-</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Fecha de Nacimiento</div>
+                                <div class="info-value">
+                                    <i class="fas fa-calendar me-2 text-muted"></i>
+                                    <span th:text="${usuario.fechaNacimiento != null ? #dates.format(usuario.fechaNacimiento, 'dd/MM/yyyy') : 'No registrada'}">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="card info-card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Información de Dirección
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="info-label">Dirección</div>
+                                <div class="info-value" th:text="${usuario.direccion != null ? usuario.direccion : 'No registrada'}">-</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Ciudad</div>
+                                <div class="info-value">
+                                    <i class="fas fa-city me-2 text-muted"></i>
+                                    <span th:text="${usuario.ciudad != null ? usuario.ciudad : 'No registrada'}">-</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">País</div>
+                                <div class="info-value">
+                                    <i class="fas fa-flag me-2 text-muted"></i>
+                                    <span th:text="${usuario.pais != null ? usuario.pais : 'No registrado'}">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="card info-card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            Información de Cuenta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Estado de Cuenta</div>
+                                <div class="info-value">
+                                    <span class="badge" 
+                                          th:classappend="${usuario.activo} ? 'bg-success' : 'bg-secondary'"
+                                          th:text="${usuario.activo} ? 'Activa' : 'Inactiva'">
+                                        Estado
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Fecha de Registro</div>
+                                <div class="info-value">
+                                    <i class="fas fa-calendar-plus me-2 text-muted"></i>
+                                    <span th:text="${usuario.fechaRegistro != null ? #dates.format(usuario.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'No disponible'}">-</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Último Acceso</div>
+                                <div class="info-value">
+                                    <i class="fas fa-clock me-2 text-muted"></i>
+                                    <span th:text="${usuario.ultimoAcceso != null ? #dates.format(usuario.ultimoAcceso, 'dd/MM/yyyy HH:mm') : 'Nunca'}">-</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-label">Nivel de Usuario</div>
+                                <div class="info-value">
+                                    <span class="badge bg-info">Cliente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card info-card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            Actividad Reciente
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong>Usuario registrado</strong>
+                                        <p class="text-muted mb-0">Se registró en la plataforma</p>
+                                    </div>
+                                    <small class="text-muted" th:text="${usuario.fechaRegistro != null ? #dates.format(usuario.fechaRegistro, 'dd/MM/yyyy') : 'Fecha no disponible'}">
+                                        Fecha
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong>Perfil actualizado</strong>
+                                        <p class="text-muted mb-0">Información de perfil modificada</p>
+                                    </div>
+                                    <small class="text-muted">Hace 2 días</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong>Primera compra</strong>
+                                        <p class="text-muted mb-0">Realizó su primera compra en la plataforma</p>
+                                    </div>
+                                    <small class="text-muted">Hace 1 semana</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">No hay más actividad reciente</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card info-card">
+                    <div class="card-body text-center">
+                        <h6 class="mb-3">Acciones Disponibles</h6>
+                        <div class="btn-group-responsive">
+                            <a th:href="@{/web/usuarios/editar/{id}(id=${usuario.id_usuario})}" 
+                               class="btn btn-eco me-2">
+                                <i class="fas fa-edit me-2"></i>
+                                Editar Usuario
+                            </a>
+                            <button class="btn btn-outline-info me-2" onclick="window.print()">
+                                <i class="fas fa-print me-2"></i>
+                                Imprimir
+                            </button>
+                            <a href="mailto:" th:href="'mailto:' + ${usuario.email}" 
+                               class="btn btn-outline-primary me-2"
+                               th:if="${usuario.email != null}">
+                                <i class="fas fa-envelope me-2"></i>
+                                Enviar Email
+                            </a>
+                            <a th:href="@{/web/usuarios/eliminar/{id}(id=${usuario.id_usuario})}" 
+                               class="btn btn-outline-danger"
+                               onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.')">
+                                <i class="fas fa-trash me-2"></i>
+                                Eliminar Usuario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-leaf me-2"></i>
+                        <strong>EcoMarket SPA</strong>
+                    </div>
+                    <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">&copy; 2024 EcoMarket SPA. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Print functionality
+        window.addEventListener('beforeprint', function() {
+            document.querySelector('.navbar').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            document.querySelector('nav[aria-label="breadcrumb"]').style.display = 'none';
+        });
+
+        window.addEventListener('afterprint', function() {
+            document.querySelector('.navbar').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            document.querySelector('nav[aria-label="breadcrumb"]').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
