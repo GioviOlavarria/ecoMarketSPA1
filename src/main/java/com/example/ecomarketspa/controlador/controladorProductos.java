@@ -1,17 +1,19 @@
 package com.example.ecomarketspa.controlador;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.example.ecomarketspa.entidades.productos;
 import com.example.ecomarketspa.servicio.servicioProductos;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "api/v1/productos")
@@ -25,22 +27,41 @@ public class controladorProductos {
     }
 
     @GetMapping
-    public List<productos> getAll(){
-        return servicioProductos.listarProductos();
+    public CollectionModel<EntityModel<productos>> getAll() {
+        List<EntityModel<productos>> productos = servicioProductos.listarProductos().stream()
+                .map(producto -> EntityModel.of(producto,
+                        linkTo(methodOn(controladorProductos.class).getBId(producto.getId())).withSelfRel(),
+                        linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(productos,
+                linkTo(methodOn(controladorProductos.class).getAll()).withSelfRel());
     }
 
     @GetMapping("/{id}")
-    public Optional<productos> getBId(@PathVariable("id") Long id){
-        return servicioProductos.listarProducto(id);
+    public EntityModel<productos> getBId(@PathVariable("id") Long id) {
+        Optional<productos> producto = servicioProductos.listarProducto(id);
+
+        if (producto.isPresent()) {
+            return EntityModel.of(producto.get(),
+                    linkTo(methodOn(controladorProductos.class).getBId(id)).withSelfRel(),
+                    linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
+        } else {
+            throw new RuntimeException("Producto no encontrado con id: " + id);
+        }
     }
 
     @PostMapping
-    public void guardarActualizar(@RequestBody productos producto){
+    public EntityModel<productos> guardarActualizar(@RequestBody productos producto) {
         servicioProductos.guardarOActualizar(producto);
+
+        return EntityModel.of(producto,
+                linkTo(methodOn(controladorProductos.class).getBId(producto.getId())).withSelfRel(),
+                linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id) {
         servicioProductos.borrar(id);
     }
 }
