@@ -78,513 +78,488 @@
             content: " *";
             color: #dc3545;
         }
+        .alert {
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-leaf me-2"></i>
-                EcoMarket SPA
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/web/productos">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/web/usuarios">Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/web/compras">Compras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                    </li>
-                </ul>
-            </div>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-leaf me-2"></i>
+            EcoMarket SPA
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/web/productos">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/web/usuarios">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/web/compras">Compras</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <!-- Breadcrumb -->
-                <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/" class="text-success">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="/web/usuarios" class="text-success">Usuarios</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Nuevo Usuario</li>
-                    </ol>
-                </nav>
+<!-- Main Content -->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/" class="text-success">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/web/usuarios" class="text-success">Usuarios</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Nuevo Usuario</li>
+                </ol>
+            </nav>
 
-                <!-- Welcome Section -->
-                <div class="welcome-section text-center">
-                    <div class="row align-items-center">
-                        <div class="col-md-8 mx-auto">
-                            <i class="fas fa-user-plus text-success mb-3" style="font-size: 3rem;"></i>
-                            <h2 class="text-success mb-3">¡Bienvenido a EcoMarket SPA!</h2>
-                            <p class="lead text-muted mb-0">
-                                Estás a punto de crear una nueva cuenta de usuario. Completa la información 
-                                solicitada para comenzar a disfrutar de nuestros productos ecológicos.
-                            </p>
-                        </div>
+            <!-- Mensajes Flash -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Welcome Section -->
+            <div class="welcome-section text-center">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mx-auto">
+                        <i class="fas fa-user-plus text-success mb-3" style="font-size: 3rem;"></i>
+                        <h2 class="text-success mb-3">¡Bienvenido a EcoMarket SPA!</h2>
+                        <p class="lead text-muted mb-0">
+                            Estás a punto de crear una nueva cuenta de usuario. Completa la información
+                            solicitada para comenzar a disfrutar de nuestros productos ecológicos.
+                        </p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step">1</div>
-                    <div class="step-line"></div>
-                    <div class="step inactive">2</div>
-                    <div class="step-line"></div>
-                    <div class="step inactive">3</div>
+            <!-- Form Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-edit me-2"></i>
+                        Información del Nuevo Usuario
+                    </h4>
                 </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/web/usuarios/guardar}" th:object="${usuario}" method="post" id="usuarioForm" novalidate>
 
-                <!-- Form Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0">
-                            <i class="fas fa-user-edit me-2"></i>
-                            Información del Nuevo Usuario
-                        </h4>
-                    </div>
-                    <div class="card-body p-4">
-                        <form th:action="@{/web/usuarios/guardar}" th:object="${usuario}" method="post" id="usuarioForm" novalidate>
-                            
-                            <!-- Sección: Información Personal -->
-                            <div class="mb-4">
-                                <h5 class="text-success mb-3">
-                                    <i class="fas fa-user me-2"></i>
-                                    Información Personal
-                                </h5>
-                                
-                                <div class="row">
-                                    <!-- Nombre -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="nombre" 
-                                                   th:field="*{nombre}"
-                                                   placeholder="Nombre completo"
-                                                   required>
-                                            <label for="nombre" class="required-field">
-                                                <i class="fas fa-user me-2"></i>
-                                                Nombre Completo
-                                            </label>
-                                            <div class="invalid-feedback">
-                                                Por favor, ingresa el nombre completo.
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Campo oculto para ID (necesario para edición) -->
+                        <input type="hidden" th:field="*{id_usuario}">
 
-                                    <!-- Email -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="email" 
-                                                   class="form-control" 
-                                                   id="email" 
-                                                   th:field="*{email}"
-                                                   placeholder="correo@ejemplo.com"
-                                                   required>
-                                            <label for="email" class="required-field">
-                                                <i class="fas fa-envelope me-2"></i>
-                                                Correo Electrónico
-                                            </label>
-                                            <div class="invalid-feedback">
-                                                Por favor, ingresa un correo electrónico válido.
-                                            </div>
+                        <!-- Sección: Información Personal -->
+                        <div class="mb-4">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                Información Personal
+                            </h5>
+
+                            <div class="row">
+                                <!-- Primer Nombre -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="primerNombre"
+                                               th:field="*{primerNombre}"
+                                               placeholder="Primer nombre"
+                                               required>
+                                        <label for="primerNombre" class="required-field">
+                                            <i class="fas fa-user me-2"></i>
+                                            Primer Nombre
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa el primer nombre.
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <!-- Teléfono -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="tel" 
-                                                   class="form-control" 
-                                                   id="telefono" 
-                                                   th:field="*{telefono}"
-                                                   placeholder="+56 9 1234 5678"
-                                                   pattern="^\+56\s9\s\d{4}\s\d{4}$">
-                                            <label for="telefono">
-                                                <i class="fas fa-phone me-2"></i>
-                                                Teléfono
-                                            </label>
-                                            <div class="form-text">Formato: +56 9 1234 5678</div>
-                                            <div class="invalid-feedback">
-                                                Por favor, ingresa un número de teléfono válido.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Fecha de Nacimiento -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="date" 
-                                                   class="form-control" 
-                                                   id="fechaNacimiento" 
-                                                   th:field="*{fechaNacimiento}"
-                                                   max="2006-01-01">
-                                            <label for="fechaNacimiento">
-                                                <i class="fas fa-calendar me-2"></i>
-                                                Fecha de Nacimiento
-                                            </label>
-                                            <div class="form-text">Debes ser mayor de 18 años</div>
+                                <!-- Primer Apellido -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="primerApellido"
+                                               th:field="*{primerApellido}"
+                                               placeholder="Primer apellido"
+                                               required>
+                                        <label for="primerApellido" class="required-field">
+                                            <i class="fas fa-user me-2"></i>
+                                            Primer Apellido
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa el primer apellido.
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Sección: Información de Dirección -->
-                            <div class="mb-4">
-                                <h5 class="text-success mb-3">
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    Información de Dirección
-                                </h5>
-
-                                <!-- Dirección -->
-                                <div class="mb-3">
+                            <div class="row">
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <textarea class="form-control" 
-                                                  id="direccion" 
+                                        <input type="email"
+                                               class="form-control"
+                                               id="email"
+                                               th:field="*{email}"
+                                               placeholder="correo@ejemplo.com"
+                                               required>
+                                        <label for="email" class="required-field">
+                                            <i class="fas fa-envelope me-2"></i>
+                                            Correo Electrónico
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa un correo electrónico válido.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Teléfono -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel"
+                                               class="form-control"
+                                               id="telefono"
+                                               th:field="*{telefono}"
+                                               placeholder="+56 9 1234 5678"
+                                               pattern="^\+56\s9\s\d{4}\s\d{4}$">
+                                        <label for="telefono">
+                                            <i class="fas fa-phone me-2"></i>
+                                            Teléfono
+                                        </label>
+                                        <div class="form-text">Formato: +56 9 1234 5678</div>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingresa un número de teléfono válido.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha de Nacimiento -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="date"
+                                               class="form-control"
+                                               id="fechaNacimiento"
+                                               th:field="*{fechaNacimiento}"
+                                               max="2006-01-01">
+                                        <label for="fechaNacimiento">
+                                            <i class="fas fa-calendar me-2"></i>
+                                            Fecha de Nacimiento
+                                        </label>
+                                        <div class="form-text">Debes ser mayor de 18 años</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección: Información de Dirección -->
+                        <div class="mb-4">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                Información de Dirección
+                            </h5>
+
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                        <textarea class="form-control"
+                                                  id="direccion"
                                                   th:field="*{direccion}"
                                                   placeholder="Dirección completa"
                                                   style="height: 100px"></textarea>
-                                        <label for="direccion">
-                                            <i class="fas fa-home me-2"></i>
-                                            Dirección Completa
-                                        </label>
-                                        <div class="form-text">Incluye calle, número, departamento (si aplica)</div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <!-- Ciudad -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="ciudad" 
-                                                   th:field="*{ciudad}"
-                                                   placeholder="Ciudad">
-                                            <label for="ciudad">
-                                                <i class="fas fa-city me-2"></i>
-                                                Ciudad
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <!-- País -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="form-floating">
-                                            <select class="form-select" 
-                                                    id="pais" 
-                                                    th:field="*{pais}">
-                                                <option value="">Seleccionar país</option>
-                                                <option value="Chile" selected>Chile</option>
-                                                <option value="Argentina">Argentina</option>
-                                                <option value="Perú">Perú</option>
-                                                <option value="Colombia">Colombia</option>
-                                                <option value="Ecuador">Ecuador</option>
-                                                <option value="Bolivia">Bolivia</option>
-                                                <option value="Uruguay">Uruguay</option>
-                                                <option value="Paraguay">Paraguay</option>
-                                                <option value="Brasil">Brasil</option>
-                                                <option value="Venezuela">Venezuela</option>
-                                            </select>
-                                            <label for="pais">
-                                                <i class="fas fa-flag me-2"></i>
-                                                País
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <label for="direccion">
+                                        <i class="fas fa-home me-2"></i>
+                                        Dirección Completa
+                                    </label>
+                                    <div class="form-text">Incluye calle, número, departamento (si aplica)</div>
                                 </div>
                             </div>
 
-                            <!-- Sección: Configuración de Cuenta -->
-                            <div class="mb-4">
-                                <h5 class="text-success mb-3">
-                                    <i class="fas fa-cog me-2"></i>
-                                    Configuración de Cuenta
-                                </h5>
-
-                                <!-- Estado Activo -->
-                                <div class="mb-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="activo" 
-                                               th:field="*{activo}"
-                                               checked>
-                                        <label class="form-check-label" for="activo">
-                                            <i class="fas fa-toggle-on me-2 text-success"></i>
-                                            <strong>Activar Usuario Inmediatamente</strong>
-                                        </label>
-                                    </div>
-                                    <small class="text-muted">
-                                        El usuario podrá acceder a la plataforma y realizar compras una vez creada la cuenta
-                                    </small>
-                                </div>
-
-                                <!-- Términos y Condiciones -->
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="terminos" 
-                                               required>
-                                        <label class="form-check-label" for="terminos">
-                                            <strong>Acepto los términos y condiciones de EcoMarket SPA</strong>
-                                        </label>
-                                        <div class="invalid-feedback">
-                                            Debes aceptar los términos y condiciones para continuar.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Notificaciones -->
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="notificaciones" 
-                                               checked>
-                                        <label class="form-check-label" for="notificaciones">
-                                            <i class="fas fa-bell me-2 text-info"></i>
-                                            Recibir notificaciones por correo electrónico sobre ofertas y productos
+                            <div class="row">
+                                <!-- Ciudad -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="ciudad"
+                                               th:field="*{ciudad}"
+                                               placeholder="Ciudad">
+                                        <label for="ciudad">
+                                            <i class="fas fa-city me-2"></i>
+                                            Ciudad
                                         </label>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-between pt-3 border-top">
-                                <a href="/web/usuarios" class="btn btn-outline-secondary btn-lg">
-                                    <i class="fas fa-arrow-left me-2"></i>
-                                    Cancelar
-                                </a>
-                                <div>
-                                    <button type="reset" class="btn btn-outline-warning btn-lg me-3">
-                                        <i class="fas fa-undo me-2"></i>
-                                        Limpiar Formulario
-                                    </button>
-                                    <button type="submit" class="btn btn-eco btn-lg">
-                                        <i class="fas fa-user-plus me-2"></i>
-                                        Crear Usuario
-                                    </button>
+                                <!-- País -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <select class="form-select"
+                                                id="pais"
+                                                th:field="*{pais}">
+                                            <option value="">Seleccionar país</option>
+                                            <option value="Chile" selected>Chile</option>
+                                            <option value="Argentina">Argentina</option>
+                                            <option value="Perú">Perú</option>
+                                            <option value="Colombia">Colombia</option>
+                                            <option value="Ecuador">Ecuador</option>
+                                            <option value="Bolivia">Bolivia</option>
+                                            <option value="Uruguay">Uruguay</option>
+                                            <option value="Paraguay">Paraguay</option>
+                                            <option value="Brasil">Brasil</option>
+                                            <option value="Venezuela">Venezuela</option>
+                                        </select>
+                                        <label for="pais">
+                                            <i class="fas fa-flag me-2"></i>
+                                            País
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Help Cards -->
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    <i class="fas fa-info-circle text-info me-2"></i>
-                                    Información Importante
-                                </h6>
-                                <ul class="list-unstyled mb-0 small">
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        Los campos con (*) son obligatorios
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        El correo debe ser único en el sistema
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        Los datos se mantienen seguros y privados
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-check text-success me-2"></i>
-                                        Puedes editar la información posteriormente
-                                    </li>
-                                </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title">
-                                    <i class="fas fa-shield-alt text-success me-2"></i>
-                                    Seguridad y Privacidad
-                                </h6>
-                                <ul class="list-unstyled mb-0 small">
-                                    <li class="mb-2">
-                                        <i class="fas fa-lock text-success me-2"></i>
-                                        Conexión SSL segura
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-lock text-success me-2"></i>
-                                        Datos encriptados
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-lock text-success me-2"></i>
-                                        Cumplimiento GDPR
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-lock text-success me-2"></i>
-                                        Sin spam garantizado
-                                    </li>
-                                </ul>
+
+                        <!-- Sección: Configuración de Cuenta -->
+                        <div class="mb-4">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-cog me-2"></i>
+                                Configuración de Cuenta
+                            </h5>
+
+                            <!-- Estado Activo -->
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="activo"
+                                           th:field="*{activo}"
+                                           checked>
+                                    <label class="form-check-label" for="activo">
+                                        <i class="fas fa-toggle-on me-2 text-success"></i>
+                                        <strong>Usuario Activo</strong>
+                                    </label>
+                                </div>
+                                <small class="text-muted">
+                                    El usuario podrá acceder a la plataforma y realizar compras
+                                </small>
                             </div>
+
+                            <!-- Términos y Condiciones -->
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="terminos"
+                                           required>
+                                    <label class="form-check-label" for="terminos">
+                                        <strong>Acepto los términos y condiciones de EcoMarket SPA</strong>
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        Debes aceptar los términos y condiciones para continuar.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a href="/web/usuarios" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Cancelar
+                            </a>
+                            <div>
+                                <button type="reset" class="btn btn-outline-warning btn-lg me-3">
+                                    <i class="fas fa-undo me-2"></i>
+                                    Limpiar Formulario
+                                </button>
+                                <button type="submit" class="btn btn-eco btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                    Crear Usuario
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Help Cards -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-info-circle text-info me-2"></i>
+                                Información Importante
+                            </h6>
+                            <ul class="list-unstyled mb-0 small">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Los campos con (*) son obligatorios
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    El correo debe ser único en el sistema
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Los datos se mantienen seguros y privados
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Puedes editar la información posteriormente
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="fas fa-shield-alt text-success me-2"></i>
+                                Seguridad y Privacidad
+                            </h6>
+                            <ul class="list-unstyled mb-0 small">
+                                <li class="mb-2">
+                                    <i class="fas fa-lock text-success me-2"></i>
+                                    Conexión SSL segura
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lock text-success me-2"></i>
+                                    Datos encriptados
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-lock text-success me-2"></i>
+                                    Cumplimiento GDPR
+                                </li>
+                                <li>
+                                    <i class="fas fa-lock text-success me-2"></i>
+                                    Sin spam garantizado
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-leaf me-2"></i>
-                        <strong>EcoMarket SPA</strong>
-                    </div>
-                    <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-leaf me-2"></i>
+                    <strong>EcoMarket SPA</strong>
                 </div>
-                <div class="col-md-6 text-end">
-                    <p class="mb-0">&copy; 2024 EcoMarket SPA. Todos los derechos reservados.</p>
-                </div>
+                <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <p class="mb-0">&copy; 2024 EcoMarket SPA. Todos los derechos reservados.</p>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Validación del formulario Bootstrap
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-
-        // Validación personalizada del formulario
-        document.getElementById('usuarioForm').addEventListener('submit', function(e) {
-            const form = e.target;
-            const terminos = document.getElementById('terminos');
-            
-            // Validar términos y condiciones
-            if (!terminos.checked) {
-                e.preventDefault();
-                e.stopPropagation();
-                terminos.setCustomValidity('Debes aceptar los términos y condiciones');
-            } else {
-                terminos.setCustomValidity('');
-            }
-            
-            form.classList.add('was-validated');
-        });
-
-        // Formatear teléfono chileno
-        document.getElementById('telefono').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.startsWith('56')) {
-                value = value.substring(2);
-            }
-            if (value.startsWith('9') && value.length >= 9) {
-                value = value.replace(/(\d{1})(\d{4})(\d{4})/, '+56 $1 $2 $3');
-            }
-            e.target.value = value;
-        });
-
-        // Validación de edad (mayor de 18 años)
-        document.getElementById('fechaNacimiento').addEventListener('change', function(e) {
-            const fechaNacimiento = new Date(e.target.value);
-            const hoy = new Date();
-            const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-            const mesActual = hoy.getMonth();
-            const mesNacimiento = fechaNacimiento.getMonth();
-            
-            if (edad < 18 || (edad === 18 && mesActual < mesNacimiento) || 
-                (edad === 18 && mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
-                e.target.setCustomValidity('Debes ser mayor de 18 años');
-            } else {
-                e.target.setCustomValidity('');
-            }
-        });
-
-        // Actualizar indicador de pasos (simulado)
-        setTimeout(function() {
-            document.querySelectorAll('.step')[1].classList.remove('inactive');
-        }, 2000);
-
-        setTimeout(function() {
-            document.querySelectorAll('.step')[2].classList.remove('inactive');
-        }, 4000);
-
-        // Confirmación antes de limpiar
-        document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
-            if (!confirm('¿Estás seguro de que deseas limpiar todos los campos?')) {
-                e.preventDefault();
-            } else {
-                // Resetear validaciones
-                document.getElementById('usuarioForm').classList.remove('was-validated');
-                document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-                document.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
-            }
-        });
-
-        // Autoguardado en localStorage (opcional)
-        const campos = ['nombre', 'email', 'telefono', 'direccion', 'ciudad'];
-        campos.forEach(campo => {
-            const elemento = document.getElementById(campo);
-            if (elemento) {
-                // Cargar valor guardado
-                const valorGuardado = localStorage.getItem('usuario_' + campo);
-                if (valorGuardado) {
-                    elemento.value = valorGuardado;
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Validación del formulario Bootstrap
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var form = document.getElementById('usuarioForm');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
-                
-                // Guardar mientras se escribe (debounced)
-                let timeout;
-                elemento.addEventListener('input', function() {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => {
-                        localStorage.setItem('usuario_' + campo, elemento.value);
-                    }, 1000);
-                });
-            }
-        });
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
+    })();
 
-        // Limpiar localStorage al enviar exitosamente
-        document.getElementById('usuarioForm').addEventListener('submit', function() {
-            if (this.checkValidity()) {
-                campos.forEach(campo => {
-                    localStorage.removeItem('usuario_' + campo);
-                });
-            }
-        });
-    </script>
+    // Validación personalizada del formulario
+    document.getElementById('usuarioForm').addEventListener('submit', function(e) {
+        const form = e.target;
+        const terminos = document.getElementById('terminos');
+
+        // Validar términos y condiciones
+        if (!terminos.checked) {
+            e.preventDefault();
+            e.stopPropagation();
+            terminos.setCustomValidity('Debes aceptar los términos y condiciones');
+        } else {
+            terminos.setCustomValidity('');
+        }
+
+        form.classList.add('was-validated');
+    });
+
+    // Formatear teléfono chileno
+    document.getElementById('telefono').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.startsWith('56')) {
+            value = value.substring(2);
+        }
+        if (value.startsWith('9') && value.length >= 9) {
+            value = value.replace(/(\d{1})(\d{4})(\d{4})/, '+56 $1 $2 $3');
+        }
+        e.target.value = value;
+    });
+
+    // Validación de edad (mayor de 18 años)
+    document.getElementById('fechaNacimiento').addEventListener('change', function(e) {
+        const fechaNacimiento = new Date(e.target.value);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const mesActual = hoy.getMonth();
+        const mesNacimiento = fechaNacimiento.getMonth();
+
+        if (edad < 18 || (edad === 18 && mesActual < mesNacimiento) ||
+            (edad === 18 && mesActual === mesNacimiento && hoy.getDate() < fechaNacimiento.getDate())) {
+            e.target.setCustomValidity('Debes ser mayor de 18 años');
+        } else {
+            e.target.setCustomValidity('');
+        }
+    });
+
+    // Confirmación antes de limpiar
+    document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+        if (!confirm('¿Estás seguro de que deseas limpiar todos los campos?')) {
+            e.preventDefault();
+        } else {
+            // Resetear validaciones
+            document.getElementById('usuarioForm').classList.remove('was-validated');
+            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            document.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+        }
+    });
+</script>
 </body>
 </html>
