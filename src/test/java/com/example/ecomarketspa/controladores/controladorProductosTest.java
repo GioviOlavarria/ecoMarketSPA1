@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
@@ -37,11 +39,12 @@ public class controladorProductosTest {
         when(servicioProductos.listarProductos()).thenReturn(new ArrayList<>());
 
 
-        List<productos> response = controladorProductos.getAll();
+        CollectionModel<EntityModel<productos>> response = controladorProductos.getAll();
 
 
         assertNotNull(response);
-        assertTrue(response instanceof ArrayList);
+
+        assertTrue(response.getContent().isEmpty());
     }
 
     @Test
@@ -53,25 +56,27 @@ public class controladorProductosTest {
         productoMock.setPrecio(BigDecimal.valueOf(100.00));
 
 
-        controladorProductos.guardarActualizar(productoMock);
+        EntityModel<productos> response = controladorProductos.guardarActualizar(productoMock);
 
 
         verify(servicioProductos).guardarOActualizar(productoMock);
+        assertNotNull(response);
+        assertEquals(productoMock, response.getContent());
     }
 
     @Test
     public void testObtenerProductoPorId() {
-        // Preparar datos de prueba
+
         productos productoMock = new productos();
         productoMock.setId(1L);
         when(servicioProductos.listarProducto(1L)).thenReturn(Optional.of(productoMock));
 
 
-        Optional<productos> response = controladorProductos.getBId(1L);
+        EntityModel<productos> response = controladorProductos.getBId(1L);
 
-        // Verificar resultados
-        assertTrue(response.isPresent());
-        assertEquals(1L, response.get().getId());
+
+        assertNotNull(response);
+        assertEquals(1L, response.getContent().getId());
     }
 
     @Test
