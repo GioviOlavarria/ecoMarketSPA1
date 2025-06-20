@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +37,10 @@ public class controladorUsuariosTest {
     public void testObtenerUsuarios() {
         when(servicioUsuarios.listarUsuarios()).thenReturn(new ArrayList<>());
 
-        List<usuarios> response = controladorUsuarios.getAll();
+        CollectionModel<EntityModel<usuarios>> response = controladorUsuarios.getAll();
 
         assertNotNull(response);
-        assertTrue(response instanceof ArrayList);
+        assertTrue(response.getContent().isEmpty());
     }
 
     @Test
@@ -47,9 +50,11 @@ public class controladorUsuariosTest {
         usuarioMock.setPrimerNombre("Juan");
         usuarioMock.setPrimerApellido("Perez");
 
-        controladorUsuarios.guardarActualizar(usuarioMock);
+        EntityModel<usuarios> response = controladorUsuarios.guardar(usuarioMock);
 
         verify(servicioUsuarios).guardarOActualizar(usuarioMock);
+        assertNotNull(response);
+        assertEquals(usuarioMock, response.getContent());
     }
 
     @Test
@@ -58,16 +63,46 @@ public class controladorUsuariosTest {
         usuarioMock.setId_usuario(1L);
         when(servicioUsuarios.listarUsuarios(1L)).thenReturn(Optional.of(usuarioMock));
 
-        Optional<usuarios> response = controladorUsuarios.getBId(1L);
+        ResponseEntity<EntityModel<usuarios>> response = controladorUsuarios.getBId(1L);
 
-        assertTrue(response.isPresent());
-        assertEquals(1L, response.get().getId_usuario());
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
+        assertEquals(1L, response.getBody().getContent().getId_usuario());
+    }
+
+    @Test
+    public void testObtenerUsuarioNoExistente() {
+        when(servicioUsuarios.listarUsuarios(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<EntityModel<usuarios>> response = controladorUsuarios.getBId(1L);
+
+        assertTrue(response.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void testActualizarUsuario() {
+        usuarios usuarioMock = new usuarios();
+        usuarioMock.setId_usuario(1L);
+        usuarioMock.setPrimerNombre("NuevoNombre");
+
+        when(servicioUsuarios.listarUsuarios(1L)).thenReturn(Optional.of(usuarioMock));
+
+        ResponseEntity<EntityModel<usuarios>> response = controladorUsuarios.actualizar(1L, usuarioMock);
+
+        verify(servicioUsuarios).guardarOActualizar(usuarioMock);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertEquals(usuarioMock, response.getBody().getContent());
     }
 
     @Test
     public void testEliminarUsuario() {
-        controladorUsuarios.delete(1L);
+        usuarios usuarioMock = new usuarios();
+        usuarioMock.setId_usuario(1L);
+        when(servicioUsuarios.listarUsuarios(1L)).thenReturn(Optional.of(usuarioMock));
+
+        ResponseEntity<CollectionModel<EntityModel<usuarios>>> response = controladorUsuarios.delete(1L);
 
         verify(servicioUsuarios).borrar(1L);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 }

@@ -5,7 +5,7 @@ import com.example.ecomarketspa.servicio.servicioProductos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +31,8 @@ public class controladorProductos {
         List<EntityModel<productos>> productos = servicioProductos.listarProductos().stream()
                 .map(producto -> EntityModel.of(producto,
                         linkTo(methodOn(controladorProductos.class).getBId(producto.getId())).withSelfRel(),
-                        linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos")))
+                        linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"),
+                        linkTo(methodOn(controladorCompras.class).obtenerPorProducto(producto.getId())).withRel("compras-producto")))
                 .collect(Collectors.toList());
 
         return CollectionModel.of(productos,
@@ -39,20 +40,23 @@ public class controladorProductos {
     }
 
     @GetMapping("/{id}")
-    public EntityModel<productos> getBId(@PathVariable("id") Long id) {
+    public ResponseEntity<EntityModel<productos>> getBId(@PathVariable("id") Long id) {
         Optional<productos> producto = servicioProductos.listarProducto(id);
 
         if (producto.isPresent()) {
-            return EntityModel.of(producto.get(),
+            EntityModel<productos> productoModel = EntityModel.of(producto.get(),
                     linkTo(methodOn(controladorProductos.class).getBId(id)).withSelfRel(),
-                    linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
+                    linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"),
+                    linkTo(methodOn(controladorCompras.class).obtenerPorProducto(id)).withRel("compras-producto"));
+
+            return ResponseEntity.ok(productoModel);
         } else {
-            throw new RuntimeException("Producto no encontrado con id: " + id);
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public EntityModel<productos> guardarActualizar(@RequestBody productos producto) {
+    public EntityModel<productos> guardar(@RequestBody productos producto) {
         servicioProductos.guardarOActualizar(producto);
 
         return EntityModel.of(producto,
@@ -60,8 +64,38 @@ public class controladorProductos {
                 linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EntityModel<productos>> actualizar(@PathVariable("id") Long id,
+                                                             @RequestBody productos productoActualizado) {
+        Optional<productos> productoExistente = servicioProductos.listarProducto(id);
+
+        if (productoExistente.isPresent()) {
+            productoActualizado.setId(id);
+            servicioProductos.guardarOActualizar(productoActualizado);
+
+            EntityModel<productos> productoModel = EntityModel.of(productoActualizado,
+                    linkTo(methodOn(controladorProductos.class).getBId(id)).withSelfRel(),
+                    linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
+
+            return ResponseEntity.ok(productoModel);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        servicioProductos.borrar(id);
+    public ResponseEntity<CollectionModel<EntityModel<productos>>> delete(@PathVariable("id") Long id) {
+        Optional<productos> producto = servicioProductos.listarProducto(id);
+
+        if (producto.isPresent()) {
+            servicioProductos.borrar(id);
+
+            CollectionModel<EntityModel<productos>> enlaces = CollectionModel.empty(
+                    linkTo(methodOn(controladorProductos.class).getAll()).withRel("productos"));
+
+            return ResponseEntity.ok(enlaces);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

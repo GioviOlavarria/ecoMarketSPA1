@@ -10,8 +10,9 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import java.math.BigDecimal;
+import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,63 +29,80 @@ public class controladorProductosTest {
     @InjectMocks
     private controladorProductos controladorProductos;
 
+    private productos productoTest;
+
     @BeforeEach
     public void setUp() {
-
+        productoTest = new productos();
+        productoTest.setId(1L);
+        productoTest.setNombre("Producto Test");
+        productoTest.setDescripcion("Descripción test");
+        productoTest.setPrecio(BigDecimal.valueOf(100.00));
     }
 
     @Test
     public void testObtenerProductos() {
+        List<productos> productosList = new ArrayList<>();
+        productosList.add(productoTest);
 
-        when(servicioProductos.listarProductos()).thenReturn(new ArrayList<>());
-
+        when(servicioProductos.listarProductos()).thenReturn(productosList);
 
         CollectionModel<EntityModel<productos>> response = controladorProductos.getAll();
 
-
         assertNotNull(response);
-
-        assertTrue(response.getContent().isEmpty());
-    }
-
-    @Test
-    public void testCrearProducto() {
-
-        productos productoMock = new productos();
-        productoMock.setId(1L);
-        productoMock.setNombre("Producto1");
-        productoMock.setPrecio(BigDecimal.valueOf(100.00));
-
-
-        EntityModel<productos> response = controladorProductos.guardarActualizar(productoMock);
-
-
-        verify(servicioProductos).guardarOActualizar(productoMock);
-        assertNotNull(response);
-        assertEquals(productoMock, response.getContent());
+        assertFalse(response.getContent().isEmpty());
     }
 
     @Test
     public void testObtenerProductoPorId() {
+        when(servicioProductos.listarProducto(1L)).thenReturn(Optional.of(productoTest));
 
-        productos productoMock = new productos();
-        productoMock.setId(1L);
-        when(servicioProductos.listarProducto(1L)).thenReturn(Optional.of(productoMock));
+        ResponseEntity<EntityModel<productos>> response = controladorProductos.getBId(1L);
 
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertEquals(1L, response.getBody().getContent().getId());
+    }
 
-        EntityModel<productos> response = controladorProductos.getBId(1L);
+    @Test
+    public void testObtenerProductoNoExistente() {
+        when(servicioProductos.listarProducto(99L)).thenReturn(Optional.empty());
 
+        ResponseEntity<EntityModel<productos>> response = controladorProductos.getBId(99L);
 
+        assertTrue(response.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void testCrearProducto() {
+        EntityModel<productos> response = controladorProductos.guardar(productoTest);
+
+        verify(servicioProductos).guardarOActualizar(productoTest);
         assertNotNull(response);
-        assertEquals(1L, response.getContent().getId());
+        assertEquals(productoTest, response.getContent());
+    }
+
+    @Test
+    public void testActualizarProducto() {
+        productos productoActualizado = new productos();
+        productoActualizado.setId(1L);
+        productoActualizado.setNombre("Nombre Actualizado");
+        productoActualizado.setPrecio(BigDecimal.valueOf(150.00));
+
+        when(servicioProductos.listarProducto(1L)).thenReturn(Optional.of(productoTest));
+
+        ResponseEntity<EntityModel<productos>> response = controladorProductos.actualizar(1L, productoActualizado);
+
+        verify(servicioProductos).guardarOActualizar(productoActualizado);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 
     @Test
     public void testEliminarProducto() {
+        when(servicioProductos.listarProducto(1L)).thenReturn(Optional.of(productoTest));
 
-        controladorProductos.delete(1L);
-
+        ResponseEntity<CollectionModel<EntityModel<productos>>> response = controladorProductos.delete(1L);
 
         verify(servicioProductos).borrar(1L);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 }
