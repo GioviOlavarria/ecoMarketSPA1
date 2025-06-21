@@ -125,6 +125,7 @@
         </div>
         <div class="card-body p-4">
           <form action="/web/compras/realizar" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="row">
               <!-- Usuario -->
               <div class="col-md-6 mb-3">
@@ -136,7 +137,7 @@
                     <option value="">Seleccionar usuario</option>
                     <option th:each="usuario : ${usuarios}"
                             th:value="${usuario.id_usuario}"
-                            th:text="${usuario.nombre + ' (' + usuario.email + ')'}">
+                            th:text="${usuario.primerNombre + ' (' + usuario.email + ')'}">
                       Juan Pérez (juan@email.com)
                     </option>
                   </select>

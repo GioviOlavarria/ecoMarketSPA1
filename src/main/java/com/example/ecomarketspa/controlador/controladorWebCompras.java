@@ -43,9 +43,11 @@ public class controladorWebCompras {
     public String realizarCompra(@RequestParam Long id_usuario,
                                  @RequestParam Long id_producto,
                                  @RequestParam(defaultValue = "1") int cantidad,
+                                 @RequestParam(value = "observaciones", required = false) String observaciones,
                                  RedirectAttributes redirectAttributes) {
         try {
             compras nuevaCompra = servicioCompras.crearCompra(id_usuario, id_producto, cantidad);
+
             redirectAttributes.addFlashAttribute("success", "Compra realizada exitosamente");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Error al realizar la compra: " + e.getMessage());
