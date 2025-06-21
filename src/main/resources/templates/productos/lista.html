@@ -32,19 +32,22 @@
             height: 50px;
             object-fit: cover;
             border-radius: 8px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.5rem;
         }
         .price-badge {
             font-size: 1.1rem;
             font-weight: bold;
         }
-        .stock-low {
-            color: #dc3545;
-        }
-        .stock-medium {
-            color: #fd7e14;
-        }
-        .stock-high {
-            color: #198754;
+        .description-cell {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -138,10 +141,8 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Producto</th>
-                        <th scope="col">Categoría</th>
+                        <th scope="col">Descripción</th>
                         <th scope="col">Precio</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Estado</th>
                         <th scope="col" class="text-center">Acciones</th>
                     </tr>
                     </thead>
@@ -150,10 +151,10 @@
                         <th scope="row" th:text="${iterStat.count}"></th>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img th:src="${producto.imagen} ?: '/images/product-placeholder.png'"
-                                     alt="Producto"
-                                     class="product-image me-3"
-                                     onerror="this.src='/images/product-placeholder.png'">
+                                <!-- Usando solo un ícono como placeholder -->
+                                <div class="product-image me-3">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
                                 <div>
                                     <div class="fw-bold" th:text="${producto.nombre}"></div>
                                     <small class="text-muted" th:text="'ID: ' + ${producto.id}"></small>
@@ -161,17 +162,11 @@
                             </div>
                         </td>
                         <td>
-                            <span class="badge bg-info" th:text="${producto.categoria}"></span>
+                            <div class="description-cell" th:text="${producto.descripcion ?: 'Sin descripción'}"
+                                 th:title="${producto.descripcion}"></div>
                         </td>
                         <td>
                             <span class="price-badge text-success" th:text="'$' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <span th:class="'fw-bold ' + (producto.stock < 10 ? 'stock-low' : (producto.stock < 50 ? 'stock-medium' : 'stock-high'))"></span>
-                        </td>
-                        <td>
-                            <span class="badge bg-success" th:if="${producto.activo}">Activo</span>
-                            <span class="badge bg-secondary" th:unless="${producto.activo}">Inactivo</span>
                         </td>
                         <td class="text-center action-buttons">
                             <a th:href="@{/web/productos/ver/{id}(id=${producto.id})}"
@@ -198,7 +193,7 @@
 
     <!-- Statistics Cards -->
     <div class="row mt-4" th:if="${!#lists.isEmpty(productos)}">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
@@ -213,46 +208,31 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card bg-success text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="card-title">Productos Activos</h6>
-                            <h3>-</h3>
+                            <h6 class="card-title">Precio Promedio</h6>
+                            <h3 th:text="'$' + ${#numbers.formatDecimal(precioPromedio, 1, 2)}"></h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="fas fa-check-circle fa-2x"></i>
+                            <i class="fas fa-dollar-sign fa-2x"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h6 class="card-title">Stock Bajo</h6>
-                            <h3>-</h3>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fas fa-exclamation-triangle fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card bg-info text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="card-title">Categorías</h6>
-                            <h3>-</h3>
+                            <h6 class="card-title">Productos con Descripción</h6>
+                            <h3 th:text="${productosConDescripcion}"></h3>
                         </div>
                         <div class="align-self-center">
-                            <i class="fas fa-tags fa-2x"></i>
+                            <i class="fas fa-file-alt fa-2x"></i>
                         </div>
                     </div>
                 </div>
