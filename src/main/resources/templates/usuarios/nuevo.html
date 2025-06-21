@@ -481,7 +481,7 @@
                 <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
             </div>
             <div class="col-md-6 text-end">
-                <p class="mb-0">&copy; 2024 EcoMarket SPA. Todos los derechos reservados.</p>
+                <p class="mb-0">&copy; 2025 EcoMarket SPA. Todos los derechos reservados.</p>
             </div>
         </div>
     </div>
@@ -489,7 +489,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Validación del formulario Bootstrap
+
     (function() {
         'use strict';
         window.addEventListener('load', function() {
@@ -504,7 +504,7 @@
         }, false);
     })();
 
-    // Validación personalizada del formulario
+
     document.getElementById('usuarioForm').addEventListener('submit', function(e) {
         const form = e.target;
         const terminos = document.getElementById('terminos');
@@ -533,7 +533,7 @@
         e.target.value = value;
     });
 
-    // Validación de edad (mayor de 18 años)
+
     document.getElementById('fechaNacimiento').addEventListener('change', function(e) {
         const fechaNacimiento = new Date(e.target.value);
         const hoy = new Date();
@@ -549,7 +549,7 @@
         }
     });
 
-    // Confirmación antes de limpiar
+
     document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
         if (!confirm('¿Estás seguro de que deseas limpiar todos los campos?')) {
             e.preventDefault();

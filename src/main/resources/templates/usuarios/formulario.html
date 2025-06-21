@@ -101,14 +101,14 @@
                         <form th:action="@{/web/usuarios/guardar}" th:object="${usuario}" method="post">
                             <!-- Hidden ID field for editing -->
                             <input type="hidden" th:field="*{id_usuario}">
-                            
+
                             <div class="row">
                                 <!-- Nombre -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <input type="text" 
-                                               class="form-control" 
-                                               id="nombre" 
+                                        <input type="text"
+                                               class="form-control"
+                                               id="nombre"
                                                th:field="*{nombre}"
                                                placeholder="Nombre completo"
                                                required>
@@ -122,9 +122,9 @@
                                 <!-- Email -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <input type="email" 
-                                               class="form-control" 
-                                               id="email" 
+                                        <input type="email"
+                                               class="form-control"
+                                               id="email"
                                                th:field="*{email}"
                                                placeholder="correo@ejemplo.com"
                                                required>
@@ -140,9 +140,9 @@
                                 <!-- Teléfono -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <input type="tel" 
-                                               class="form-control" 
-                                               id="telefono" 
+                                        <input type="tel"
+                                               class="form-control"
+                                               id="telefono"
                                                th:field="*{telefono}"
                                                placeholder="+56 9 1234 5678">
                                         <label for="telefono">
@@ -155,9 +155,9 @@
                                 <!-- Fecha de Nacimiento -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <input type="date" 
-                                               class="form-control" 
-                                               id="fechaNacimiento" 
+                                        <input type="date"
+                                               class="form-control"
+                                               id="fechaNacimiento"
                                                th:field="*{fechaNacimiento}"
                                                placeholder="Fecha de nacimiento">
                                         <label for="fechaNacimiento">
@@ -171,8 +171,8 @@
                             <!-- Dirección -->
                             <div class="mb-3">
                                 <div class="form-floating">
-                                    <textarea class="form-control" 
-                                              id="direccion" 
+                                    <textarea class="form-control"
+                                              id="direccion"
                                               th:field="*{direccion}"
                                               placeholder="Dirección completa"
                                               style="height: 100px"></textarea>
@@ -187,9 +187,9 @@
                                 <!-- Ciudad -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <input type="text" 
-                                               class="form-control" 
-                                               id="ciudad" 
+                                        <input type="text"
+                                               class="form-control"
+                                               id="ciudad"
                                                th:field="*{ciudad}"
                                                placeholder="Ciudad">
                                         <label for="ciudad">
@@ -202,8 +202,8 @@
                                 <!-- País -->
                                 <div class="col-md-6 mb-3">
                                     <div class="form-floating">
-                                        <select class="form-select" 
-                                                id="pais" 
+                                        <select class="form-select"
+                                                id="pais"
                                                 th:field="*{pais}">
                                             <option value="">Seleccionar país</option>
                                             <option value="Chile">Chile</option>
@@ -228,9 +228,9 @@
                             <!-- Estado Activo -->
                             <div class="mb-4">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" 
-                                           type="checkbox" 
-                                           id="activo" 
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="activo"
                                            th:field="*{activo}"
                                            checked>
                                     <label class="form-check-label" for="activo">
@@ -305,7 +305,7 @@
                     <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p class="mb-0">&copy; 2024 EcoMarket SPA. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2025 EcoMarket SPA. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>
