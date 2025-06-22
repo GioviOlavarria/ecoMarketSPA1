@@ -54,19 +54,37 @@ public class controladorWebCompras {
         }
         return "redirect:/web/compras";
     }
-    
+
     @GetMapping("/ver/{id}")
     public String verCompra(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<compras> compra = servicioCompras.listarCompra(id);
-        if (compra.isPresent()) {
-            model.addAttribute("compra", compra.get());
-            model.addAttribute("estados", compras.EstadoCompra.values());
-            return "compras/detalle";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Compra no encontrada");
+        try {
+            Optional<compras> compra = servicioCompras.listarCompra(id);
+            if (compra.isPresent()) {
+                compras compraEncontrada = compra.get();
+
+
+                try {
+                    compraEncontrada.getUsuario().getEmail();
+                    compraEncontrada.getProducto().getNombre();
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("error", "Error al cargar los datos relacionados de la compra");
+                    return "redirect:/web/compras";
+                }
+
+                model.addAttribute("compra", compraEncontrada);
+                model.addAttribute("estados", compras.EstadoCompra.values());
+                return "compras/detalle";
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Compra no encontrada");
+                return "redirect:/web/compras";
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al cargar los detalles: " + e.getMessage());
             return "redirect:/web/compras";
         }
     }
+
+
 
     @PostMapping("/{id}/estado")
     public String actualizarEstado(@PathVariable Long id,

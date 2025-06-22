@@ -191,12 +191,14 @@
               <span class="total-amount" th:text="'$' + ${#numbers.formatDecimal(compra.total, 1, 2)}"></span>
             </td>
             <td>
-                            <span th:class="'badge estado-badge ' +
-                                (compra.estado.name() == 'PROCESANDO' ? 'badge-procesando' :
-                                (compra.estado.name() == 'CONFIRMADA' ? 'badge-confirmada' :
-                                (compra.estado.name() == 'ENVIADA' ? 'badge-enviada' :
-                                (compra.estado.name() == 'ENTREGADA' ? 'badge-entregada' : 'badge-cancelada'))))"
-                                  th:text="${compra.estado}">PROCESANDO</span>
+              <!-- SOLUCIÓN: Usar th:switch en lugar de expresión ternaria compleja -->
+              <th:block th:switch="${compra.estado.name()}">
+                <span th:case="'PROCESANDO'" class="badge estado-badge badge-procesando" th:text="${compra.estado}"></span>
+                <span th:case="'CONFIRMADA'" class="badge estado-badge badge-confirmada" th:text="${compra.estado}"></span>
+                <span th:case="'ENVIADA'" class="badge estado-badge badge-enviada" th:text="${compra.estado}"></span>
+                <span th:case="'ENTREGADA'" class="badge estado-badge badge-entregada" th:text="${compra.estado}"></span>
+                <span th:case="*" class="badge estado-badge badge-cancelada" th:text="${compra.estado}"></span>
+              </th:block>
             </td>
             <td class="text-center action-buttons">
               <a th:href="@{/web/compras/ver/{id}(id=${compra.id_compra})}"
