@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMarket SPA - Gestión de Productos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .price-input {
+            position: relative;
+        }
+
+        .price-input::before {
+            content: '$';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1rem;
+            z-index: 1;
+        }
+
+        .price-input.clp::before {
+            content: 'CLP';
+            font-size: 0.9rem;
+            left: 15px;
+            width: 35px;
+        }
+
+        .price-input input {
+            padding-left: 60px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        body {
+            padding-top: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .form-validation {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bdc3c7;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .btn-primary {
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">🌱 EcoMarket SPA</div>
+            <div class="nav-links">
+                <a href="/web/productos"><i class="fas fa-box"></i> Productos</a>
+                <a href="/web/usuarios"><i class="fas fa-users"></i> Usuarios</a>
+                <a href="/web/compras"><i class="fas fa-shopping-cart"></i> Compras</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1 th:text="${titulo != null ? titulo : 'Nuevo Producto'}">Nuevo Producto</h1>
+            <div class="subtitle">
+                <i class="fas fa-plus-circle"></i>
+                <span th:text="${producto?.id != null ? 'Modifica la información del producto' : 'Agrega un nuevo producto al catálogo'}">
+                    Agrega un nuevo producto al catálogo
+                </span>
+            </div>
+        </div>
+
+        <!-- Mostrar mensajes flash de Thymeleaf -->
+        <div th:if="${success}" class="alert alert-success" style="display: flex;">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${success}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert alert-error" style="display: flex;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Alertas para JavaScript -->
+        <div class="alert alert-success" id="successAlert">
+            <i class="fas fa-check-circle"></i>
+            <span id="successMessage"></span>
+        </div>
+
+        <div class="alert alert-error" id="errorAlert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorMessage"></span>
+        </div>
+
+        <!-- Formulario corregido con Thymeleaf -->
+        <form th:action="@{/web/productos/guardar}" th:object="${producto}" method="post" id="productForm">
+            <!-- Campo oculto para ID (necesario para edición) -->
+            <input type="hidden" th:field="*{id}" />
+            
+            <div class="form-group">
+                <label for="nombre">
+                    <i class="fas fa-tag"></i> Nombre del Producto *
+                </label>
+                <input type="text" 
+                       th:field="*{nombre}" 
+                       id="nombre" 
+                       required 
+                       maxlength="100" 
+                       placeholder="Ej: Shampoo Orgánico de Coco"
+                       class="form-control">
+                <div class="form-validation" id="nombreError">El nombre es requerido</div>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">
+                    <i class="fas fa-info-circle"></i> Descripción
+                </label>
+                <textarea th:field="*{descripcion}" 
+                          id="descripcion" 
+                          placeholder="Describe las características y beneficios del producto..."
+                          class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="precio">
+                    <i class="fas fa-dollar-sign"></i> Precio (CLP) *
+                </label>
+                <div class="price-input clp">
+                    <input type="number" 
+                           th:field="*{precio}" 
+                           id="precio" 
+                           required 
+                           min="1" 
+                           step="1" 
+                           placeholder="15000"
+                           class="form-control">
+                </div>
+                <div class="form-validation" id="precioError">El precio debe ser mayor a 0</div>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    <span th:text="${producto?.id != null ? 'Actualizar Producto' : 'Guardar Producto'}">
+                        Guardar Producto
+                    </span>
+                </button>
+                <a href="/web/productos" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Referencias a elementos del DOM
+        const form = document.getElementById('productForm');
+        const nombreInput = document.getElementById('nombre');
+        const precioInput = document.getElementById('precio');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        // Validación del formulario en el lado cliente
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Validar nombre
+            if (!nombreInput.value.trim()) {
+                showFieldError('nombreError');
+                isValid = false;
+            } else {
+                hideFieldError('nombreError');
+            }
+
+            // Validar precio
+            const precio = parseFloat(precioInput.value);
+            if (!precioInput.value || precio <= 0 || isNaN(precio)) {
+                showFieldError('precioError');
+                isValid = false;
+            } else {
+                hideFieldError('precioError');
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                showAlert('error', 'Por favor, corrige los errores en el formulario');
+            } else {
+                // Mostrar estado de carga
+                showLoading(true);
+            }
+        });
+
+        // Funciones de utilidad
+        function showFieldError(errorId) {
+            document.getElementById(errorId).style.display = 'block';
+        }
+
+        function hideFieldError(errorId) {
+            document.getElementById(errorId).style.display = 'none';
+        }
+
+        function showAlert(type, message) {
+            const alertElement = document.getElementById(type === 'success' ? 'successAlert' : 'errorAlert');
+            const messageElement = document.getElementById(type === 'success' ? 'successMessage' : 'errorMessage');
+            
+            messageElement.textContent = message;
+            alertElement.style.display = 'flex';
+            
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+
+        function showLoading(isLoading) {
+            const container = document.querySelector('.container');
+            if (isLoading) {
+                container.classList.add('loading');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            } else {
+                container.classList.remove('loading');
+            }
+        }
+
+        // Validación en tiempo real
+        nombreInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                hideFieldError('nombreError');
+            }
+        });
+
+        precioInput.addEventListener('input', function() {
+            // Remover caracteres no numéricos excepto punto
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            if (this.value && parseFloat(this.value) > 0) {
+                hideFieldError('precioError');
+            }
+        });
+
+        // Formateo del precio en CLP (sin decimales)
+        precioInput.addEventListener('blur', function() {
+            if (this.value) {
+                const value = parseInt(this.value);
+                if (!isNaN(value) && value > 0) {
+                    this.value = value.toString();
+                }
+            }
+        });
+
+        // Animaciones de entrada para los inputs
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentNode.style.transform = 'scale(1)';
+            });
+        });
+
+        // Auto-ocultar alertas después de 5 segundos
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                if (alert.style.display === 'flex') {
+                    alert.style.display = 'none';
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

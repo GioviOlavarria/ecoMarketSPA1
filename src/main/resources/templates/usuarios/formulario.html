@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} + ' - EcoMarket SPA'">Usuario - EcoMarket SPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #22c55e !important;
+        }
+        .btn-eco {
+            background-color: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+        .btn-eco:hover {
+            background-color: #16a34a;
+            border-color: #16a34a;
+            color: white;
+        }
+        .form-floating > label {
+            color: #6c757d;
+        }
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            color: #22c55e;
+        }
+        .form-control:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-leaf me-2"></i>
+                EcoMarket SPA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/web/usuarios">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/compras">Compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/" class="text-success">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="/web/usuarios" class="text-success">Usuarios</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" th:text="${titulo}">Formulario</li>
+                    </ol>
+                </nav>
+
+                <!-- Form Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i>
+                            <span th:text="${titulo}">Formulario de Usuario</span>
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form th:action="@{/web/usuarios/guardar}" th:object="${usuario}" method="post">
+                            <!-- Hidden ID field for editing -->
+                            <input type="hidden" th:field="*{id_usuario}">
+
+                            <div class="row">
+                                <!-- Nombre -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="nombre"
+                                               th:field="*{nombre}"
+                                               placeholder="Nombre completo"
+                                               required>
+                                        <label for="nombre">
+                                            <i class="fas fa-user me-2"></i>
+                                            Nombre Completo
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="email"
+                                               class="form-control"
+                                               id="email"
+                                               th:field="*{email}"
+                                               placeholder="correo@ejemplo.com"
+                                               required>
+                                        <label for="email">
+                                            <i class="fas fa-envelope me-2"></i>
+                                            Correo Electrónico
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Teléfono -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="tel"
+                                               class="form-control"
+                                               id="telefono"
+                                               th:field="*{telefono}"
+                                               placeholder="+56 9 1234 5678">
+                                        <label for="telefono">
+                                            <i class="fas fa-phone me-2"></i>
+                                            Teléfono
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Fecha de Nacimiento -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="date"
+                                               class="form-control"
+                                               id="fechaNacimiento"
+                                               th:field="*{fechaNacimiento}"
+                                               placeholder="Fecha de nacimiento">
+                                        <label for="fechaNacimiento">
+                                            <i class="fas fa-calendar me-2"></i>
+                                            Fecha de Nacimiento
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <div class="form-floating">
+                                    <textarea class="form-control"
+                                              id="direccion"
+                                              th:field="*{direccion}"
+                                              placeholder="Dirección completa"
+                                              style="height: 100px"></textarea>
+                                    <label for="direccion">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        Dirección
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Ciudad -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="ciudad"
+                                               th:field="*{ciudad}"
+                                               placeholder="Ciudad">
+                                        <label for="ciudad">
+                                            <i class="fas fa-city me-2"></i>
+                                            Ciudad
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- País -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <select class="form-select"
+                                                id="pais"
+                                                th:field="*{pais}">
+                                            <option value="">Seleccionar país</option>
+                                            <option value="Chile">Chile</option>
+                                            <option value="Argentina">Argentina</option>
+                                            <option value="Perú">Perú</option>
+                                            <option value="Colombia">Colombia</option>
+                                            <option value="Ecuador">Ecuador</option>
+                                            <option value="Bolivia">Bolivia</option>
+                                            <option value="Uruguay">Uruguay</option>
+                                            <option value="Paraguay">Paraguay</option>
+                                            <option value="Brasil">Brasil</option>
+                                            <option value="Venezuela">Venezuela</option>
+                                        </select>
+                                        <label for="pais">
+                                            <i class="fas fa-flag me-2"></i>
+                                            País
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Estado Activo -->
+                            <div class="mb-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="activo"
+                                           th:field="*{activo}"
+                                           checked>
+                                    <label class="form-check-label" for="activo">
+                                        <i class="fas fa-toggle-on me-2 text-success"></i>
+                                        Usuario Activo
+                                    </label>
+                                </div>
+                                <small class="text-muted">Los usuarios inactivos no podrán acceder a la plataforma</small>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-between">
+                                <a href="/web/usuarios" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>
+                                    Volver
+                                </a>
+                                <div>
+                                    <button type="reset" class="btn btn-outline-warning me-2">
+                                        <i class="fas fa-undo me-2"></i>
+                                        Limpiar
+                                    </button>
+                                    <button type="submit" class="btn btn-eco">
+                                        <i class="fas fa-save me-2"></i>
+                                        <span th:text="${usuario.id_usuario != null ? 'Actualizar' : 'Guardar'}">Guardar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            Información Importante
+                        </h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Los campos marcados con * son obligatorios
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                El correo electrónico debe ser único en el sistema
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Los usuarios inactivos no podrán realizar compras
+                            </li>
+                            <li>
+                                <i class="fas fa-check text-success me-2"></i>
+                                La información personal se mantiene segura y privada
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-leaf me-2"></i>
+                        <strong>EcoMarket SPA</strong>
+                    </div>
+                    <p class="mt-2 text-muted">Marketplace ecológico para un futuro sustentable</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">&copy; 2025 EcoMarket SPA. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Validación del formulario
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Formatear teléfono
+        document.getElementById('telefono').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 8) {
+                value = value.replace(/(\d{1})(\d{4})(\d{4})/, '+56 $1 $2 $3');
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
