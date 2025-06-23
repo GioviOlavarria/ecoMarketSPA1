@@ -29,7 +29,7 @@ Este es un sistema de microservicios desarrollado con Java y Spring Boot, que ut
 
 1. **Clona el repositorio**:
     ```bash
-    git clone https://github.com/tuusuario/tu-repositorio.git
+    git clone https://github.com/GioviOlavarria/ecoMarketSPA1
     ```
 
 2. **Base de datos**:
